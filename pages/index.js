@@ -3,10 +3,13 @@ import styles from '../styles/Home.module.css'
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-
 import rootReducer, { rootSaga } from '../modules';
 
 import CounterContainer from '../containers/CounterContainer';
+// import PostList from '../components/PostList';
+// import Categories from '../components/Categories'
+import { useCallback, useState } from 'react';
+import PageContainer from '../containers/PageContainer';
 
 const sagaMiddleware = createSagaMiddleware(); // 사가 미들웨어를 만듭니다.
 
@@ -23,12 +26,9 @@ const store = createStore(
 sagaMiddleware.run(rootSaga)
 
 export default function Home() {
-  return (
-    
-    <Provider store={store}>
-      <CounterContainer>
-        
-      </CounterContainer>
-    </Provider>
-  )
+    return (
+        <Provider store={store}>
+            <PageContainer></PageContainer>
+        </Provider>
+    )
 }
