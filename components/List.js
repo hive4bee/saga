@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import styled from "styled-components";
 import ListItem from './ListItem'
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { startLoading, finishLoading } from '../modules/loading'
+import { getPost, unloadPost } from '../modules/sample';
 
 const ListBlock=styled.div`
     box-sizing:border-box;
@@ -16,15 +17,28 @@ const ListBlock=styled.div`
 
 
 const List=({category})=>{
-    const [items, setItems]=useState(null);
+    const dispatch = useDispatch();
+    const {posts} = useSelector(state=>({
+        posts: state.posts
+    }));
+    const [id, setId]=useState("");
+    const onClick= useCallback((id)=>{
+        console.log(id);
+        setId(id);
+    },[id])
+    useEffect(()=>{
+        dispatch(getPost(id))
+        console.log(posts)
+    },[id])
+    const [items, setItems]=useState();
     // const [loading, setLoading]=useState(false)
     useEffect(()=>{
-        let fetchData= async() =>{
+        const fetchData= async() =>{
             //setLoading(true)
             //dispatch(startLoading('post'))
             try{
                 const response = await axios.get(`http://jsonplaceholder.typicode.com/${category}`)
-                console.log(response.data)
+                //console.log(response.data)
                 setItems(response.data)
             }catch(e){
                 console.log(e)
@@ -47,7 +61,7 @@ const List=({category})=>{
                 <div>대기중...........</div>
             )}
             {items && items.map(item => (
-                <ListItem key={item.id} item={item} category={category}/>
+                <ListItem key={item.id} item={item} category={category} onClick={()=>onClick(item.id)}/>
             ))}
         </ListBlock>
     )

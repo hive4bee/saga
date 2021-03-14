@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from "styled-components";
+import { getPost, unloadPost } from '../modules/sample';
 
 const ListItemBlock=styled.div`
     display:flex;
@@ -22,9 +24,19 @@ const ListItemBlock=styled.div`
     }
 `;
 
-const ListItem = ({item, category}) => {
+
+
+const ListItem = ({item, category, onClick}) => {
+    
+    // useEffect(()=>{
+        
+    //     return ()=>{
+    //         // dispatch(unloadPost());
+    //     }
+    // },[posts])
+
     return(
-        <ListItemBlock>
+        <ListItemBlock onClick={onClick}>
             {category==='posts' && (
                 <div className="content">
                     <h2>
